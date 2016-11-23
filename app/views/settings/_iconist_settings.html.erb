@@ -1,0 +1,55 @@
+<% Tracker.all.each do |tracker|  %>
+<div class="col-md-5">
+   <div class="form-group">
+       <div class="btn-group">
+            <button class="btn btn-primary iconpicker-component" type="button"
+                 id="<%='iconist_' + tracker.name %>" name="<%= 'settings[iconist_' + tracker.name + ']'%>" value="<%=@settings['iconist_' + tracker.name]%>">
+                 <i class="fa fa-amazon"></i></button>
+            <button data-toggle="dropdown" data-selected="fa-car" class="icp icp-dd btn btn-primary dropdown-toggle" type="button" aria-expanded="false">
+                 <span class="caret"></span>
+                 <span class="sr-only">Toggle Dropdown</span>
+            </button>
+           <div class="dropdown-menu iconpicker-container"></div>
+       </div>
+    </div>
+</div>
+<% end %>
+<script>
+	    $(function() {
+
+                // Live binding of buttons
+                $(document).on('click', '.action-placement', function(e) {
+                    $('.action-placement').removeClass('active');
+                    $(this).addClass('active');
+                    $('.icp-opts').data('iconpicker').updatePlacement($(this).text());
+                    e.preventDefault();
+                    return false;
+                });
+                $('.icp-auto').iconpicker();
+                    
+                $('.icp-dd').iconpicker({
+                    //title: 'Dropdown with picker',
+                    //component:'.btn > i'
+                });
+                    
+                $('.icp-glyphs').iconpicker({
+                    title: 'Prepending glypghicons',
+                    icons: $.merge(['glyphicon-home', 'glyphicon-repeat', 'glyphicon-search',
+                       'glyphicon-arrow-left', 'glyphicon-arrow-right', 'glyphicon-star'], $.iconpicker.defaultOptions.icons),
+                    fullClassFormatter: function(val){
+                        if(val.match(/^fa-/)){
+                              return 'fa '+val;
+                        }else{
+                            return 'glyphicon '+val;
+                        }
+                    }
+                });
+                $('.icp').on('iconpickerSelected', function(e) {
+                    $('.lead .picker-target').get(0).className = 'picker-target fa-3x ' +
+                            e.iconpickerInstance.options.iconBaseClass + ' ' +
+                            e.iconpickerInstance.options.fullClassFormatter(e.iconpickerValue);
+                });
+           
+    });
+
+</script>
